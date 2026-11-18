@@ -1,5 +1,7 @@
 # 引力信使 · Gravity Courier
 
+**在线玩**：https://zhaozihuitre.github.io/gravity-courier/ （GitHub Pages，电脑和手机都能打开）
+
 借行星引力让鱼雷拐弯，击毁躲在星球背后的星际海盗船。纯 HTML5 Canvas，不依赖任何库，浏览器和手机都能玩。
 
 ## 怎么玩
