@@ -2,6 +2,8 @@
 
 **在线玩**：https://zhaozihuitre.github.io/gravity-courier/ （GitHub Pages，电脑和手机都能打开）
 
+**装到桌面（PWA）**：Android/桌面 Chrome、Edge 打开后标题页会出现「安装到桌面 / Install」按钮（浏览器允许安装时才出现）；iOS Safari 用「分享 → 添加到主屏幕」。装好后是全屏运行、没有浏览器地址栏，断网也能玩（`sw.js` 把整包缓存了）。
+
 借行星引力让鱼雷拐弯，击毁躲在星球背后的星际海盗船。纯 HTML5 Canvas，不依赖任何库，浏览器和手机都能玩。
 
 ## 怎么玩
@@ -55,13 +57,26 @@ js/audio.js       Web Audio 合成音效
 js/i18n.js        中英文文字（界面、章节、关卡名和提示）
 js/cards.js       物理小卡片（中英双语）
 js/game.js        场景、输入、渲染、存档
+js/pwa.js         Service Worker 注册 + 「安装到桌面」按钮（https 下才生效，本地/itch 里自动跳过）
+docs/             GitHub Pages 站点：单文件 index.html + manifest.webmanifest + sw.js + icons/
 tools/solve.js    关卡求解器：暴力扫描角度×力度×时机，验证每关可解并给出难度
+tools/build_web.js 生成 docs/index.html（内联 CSS/JS 并检查 PWA 资源是否齐全）
+tools/make_icons.ps1 从 release/art/icon-source.png 生成各尺寸 PWA 图标
 proposal/         最初的 6 个创意提案页
 ```
 
 ## 开发
 
 - 调试参数：`index.html?all` 解锁全部关卡；`index.html?lv=12` 直接进入第 12 关。
+- 发布到线上（GitHub Pages 从 `main` 分支的 `/docs` 目录发布）：
+
+  ```
+  node tools/build_web.js      # 生成 docs/index.html
+  git add -A && git commit -m "update" && git push
+  ```
+
+  改完游戏记得把 `docs/sw.js` 顶部的 `VERSION` 加一，否则老玩家会一直吃旧缓存。
+- 重做图标：换掉 `release/art/icon-source.png` 后跑 `powershell -File tools/make_icons.ps1`。
 - 改关卡后运行求解器验证：
 
   ```
