@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Galaxy 创意提案</title>
+<style>
+:root{
+  --bg:#060912; --panel:#0d1322; --panel2:#111a2e; --line:#1e2945; --text:#e7ecf6; --muted:#8c98b4;
+  --gold:#ffcf6b; --cyan:#6be3ff; --pink:#ff7eb6; --green:#7be3a0;
+  --font:"PingFang SC","Microsoft YaHei","Noto Sans SC","Hiragino Sans GB",system-ui,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.65}
+body{background:radial-gradient(1200px 600px at 80% -10%,rgba(90,60,180,.18),transparent 60%),radial-gradient(900px 500px at -10% 30%,rgba(40,120,200,.10),transparent 60%),var(--bg);background-attachment:fixed}
+.wrap{max-width:1220px;margin:0 auto;padding:0 20px}
+header.hero{padding:44px 0 18px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.25;margin:10px 0 12px;font-weight:800;letter-spacing:.01em}
+h1 em{font-style:normal;color:var(--gold)}
+.lead{color:var(--muted);max-width:820px;margin:0}
+.lead code{font-family:var(--mono);color:var(--text);background:var(--panel2);padding:1px 6px;border-radius:4px;font-size:.9em}
+.tldr{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--muted)}
+.pill b{color:var(--gold);font-weight:700}
+
+.tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:22px 0 16px}
+.tab{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:12px 12px 10px;text-align:left;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s,transform .15s;position:relative}
+.tab:hover{border-color:#34446e;transform:translateY(-1px)}
+.tab[aria-selected=true]{border-color:var(--gold);background:linear-gradient(180deg,rgba(255,207,107,.10),var(--panel))}
+.tab .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.tab .t{display:block;font-weight:700;font-size:16px;margin:2px 0}
+.tab .g{font-size:12px;color:var(--muted)}
+.tab .star{position:absolute;top:8px;right:10px;font-size:11px;color:#1a1300;background:var(--gold);border-radius:6px;padding:0 6px;font-weight:700}
+
+.stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.play{position:sticky;top:12px}
+.canvas-box{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:#04060d}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.caption{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--muted)}
+.caption b{color:var(--text)}
+.btn{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;padding:6px 14px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--gold)}
+
+.detail{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.detail .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.detail h2{margin:0;font-size:24px}
+.chip{font-size:12px;border-radius:6px;padding:1px 8px;border:1px solid var(--line);color:var(--muted)}
+.pitch{font-size:17px;margin:12px 0 14px;padding-left:12px;border-left:3px solid var(--gold);color:#f4f0e2}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.metric{background:var(--panel2);border-radius:10px;padding:8px 10px}
+.metric small{display:block;color:var(--muted);font-size:11px}
+.metric span{font-weight:700;font-size:14px}
+dl{margin:0}
+dt{font-size:12px;color:var(--cyan);margin-top:12px;letter-spacing:.06em}
+dd{margin:2px 0 0;font-size:14px;color:#d5dcec}
+dd.risk{color:#f3c6c6}
+
+section.block{margin:44px 0}
+section.block h3{font-size:22px;margin:0 0 6px}
+section.block .sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;color:var(--muted);font-weight:600;background:var(--panel)}
+tr:last-child td{border-bottom:none}
+tr.rec td{background:rgba(255,207,107,.06)}
+td.dots{font-family:var(--mono);letter-spacing:2px;color:var(--gold)}
+td.dots .off{color:#2c3654}
+
+.rec-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.card.hl{border-color:rgba(255,207,107,.55);background:linear-gradient(160deg,rgba(255,207,107,.08),var(--panel) 50%)}
+.card h4{margin:0 0 8px;font-size:18px}
+.card ul{margin:8px 0 0;padding-left:20px}
+.card li{margin:6px 0;font-size:14px;color:#d5dcec}
+.card p{font-size:14px;color:#d5dcec;margin:8px 0}
+.plan{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+.plan div{background:var(--panel2);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--muted)}
+.plan b{display:block;color:var(--text);font-size:13px}
+footer{color:var(--muted);font-size:13px;padding:10px 0 50px;border-top:1px solid var(--line);margin-top:30px}
+
+@media (max-width:1000px){
+  .tabs{grid-template-columns:repeat(3,1fr)}
+  .stage{grid-template-columns:1fr}
+  .play{position:static}
+  .rec-grid{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .canvas-box{aspect-ratio:3/4}
+  .metrics{grid-template-columns:repeat(3,1fr)}
+  .plan{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Galaxy · 宇宙小游戏创意提案</div>
+    <h1>6 个原创点子，<em>先玩 10 秒</em>再决定做哪个</h1>
+    <p class="lead">文件夹 <code>D:\projects\Galaxy</code> 目前是空的，所以从零开始。下面每个点子都配了一个能直接上手的小原型（鼠标、触屏都能玩），点卡片切换。原型只为让你感受手感，画面和数值都还没打磨。</p>
+    <div class="tldr">
+      <span class="pill">首推 <b>② 引力信使</b>：上手最快、物理本身就好玩，MVP 约 5 天</span>
+      <span class="pill">次选 <b>③ 视差星图</b>：最有原创感，开发最快</span>
+      <span class="pill">技术：HTML5 Canvas，浏览器和手机都能玩</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+
+  <div class="stage">
+    <div class="play">
+      <div class="canvas-box"><canvas id="stage"></canvas></div>
+      <div class="caption"><span id="hint"></span><button class="btn" id="reset">重开</button></div>
+    </div>
+    <article class="detail" id="detail"></article>
+  </div>
+
+  <section class="block">
+    <h3>横向对比</h3>
+    <p class="sub">●越多越好；「内容压力」指做出完整版需要的关卡、文案、数值等内容量，越低越省事。</p>
+    <div class="tablewrap"><table id="cmp"></table></div>
+  </section>
+
+  <section class="block">
+    <h3>推荐</h3>
+    <p class="sub">按「好玩的概率 × 做得出来的把握」来排。</p>
+    <div class="rec-grid">
+      <div class="card hl">
+        <h4>首推：② 引力信使</h4>
+        <ul>
+          <li><b>10 秒就能懂</b>：拖、放、看弧线。不用教程，鼠标和触屏手感一样。</li>
+          <li><b>好玩来自物理本身</b>：不靠堆数值和文案，最快能做出「真的好玩」的版本。「差一点就进了」的感觉会让人一直想再试一次。</li>
+          <li><b>技术风险低</b>：核心是一个约 100 行的引力积分器，Canvas 2D 在手机上也能跑满 60fps。</li>
+          <li><b>扩展路线清楚</b>：一种新天体就是一个新章节（双星、黑洞、虫洞、移动卫星、斥力场），以后还能加关卡编辑器、每日挑战、关卡码分享。</li>
+          <li><b>能吸收别的点子</b>：⑥ 的引力沙盒可以直接当「自由模式/关卡编辑器」，共用同一套物理；③ 的星座可以做成收集要素（每关拿到的星尘连成星座图鉴）。</li>
+        </ul>
+        <div class="plan">
+          <div><b>第 1 天</b>物理、发射、预测线</div>
+          <div><b>第 2 天</b>关卡格式 + 5 种天体</div>
+          <div><b>第 3 天</b>20 关 + 评星</div>
+          <div><b>第 4 天</b>UI、音效、存档、手机适配</div>
+          <div><b>第 5 天</b>打磨、试玩调整、部署</div>
+        </div>
+      </div>
+      <div class="card">
+        <h4>其他情况怎么选</h4>
+        <p><b>想要最有记忆点的精致小品</b> → ③ 视差星图。对齐那一刻的「啊哈」很强，MVP 只要 3–4 天；但内容消耗快，长线要靠不断加新机制。</p>
+        <p><b>想要能挂着玩的长线游戏</b> → ① 星环工坊。门槛最低，但好不好玩全看数值曲线，需要反复调。</p>
+        <p><b>只想要放松的玩具</b> → ⑥ 星海花园。最好看、最省事，但缺少目标，留存弱。</p>
+        <p><b>不太建议当第一个项目</b>：⑤ 深空回声（事件文案量很大）、④ 碎岩带求生（同类游戏很多，数值和内容要求都高）。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="card">
+      <h4>下一步</h4>
+      <p>回复编号就行，可以组合，比如「2，加上 6 的自由模式」。如果有偏好也可以一起说：美术风格（极简发光 / 像素 / 手绘）、要不要音效、是否需要部署到网上给别人玩。选定后我会按 MVP 计划开始开发。</p>
+    </div>
+  </section>
+
+  <footer>原型全部为原创设计，写在这一个 HTML 文件里，不依赖外部库。</footer>
+</div>
+
+<script>
+(() => {
+const TAU = Math.PI * 2;
+const FONT = getComputedStyle(document.documentElement).getPropertyValue('--font');
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const hsl = (h, s, l, a = 1) => `hsla(${h},${s}%,${l}%,${a})`;
+const fmt = n => n < 1000 ? Math.floor(n).toString() : n < 1e6 ? (n / 1e3).toFixed(1) + 'K' : (n / 1e6).toFixed(2) + 'M';
+
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+let W = 0, H = 0;
+
+function glow(x, y, r, color) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, color); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+}
+function text(s, x, y, o = {}) {
+  ctx.font = `${o.weight || 500} ${o.size || 14}px ${FONT}`;
+  ctx.fillStyle = o.color || '#e7ecf6';
+  ctx.textAlign = o.align || 'left';
+  ctx.textBaseline = o.base || 'alphabetic';
+  ctx.fillText(s, x, y);
+}
+function rrect(x, y, w, h, r) {
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+const SKY = Array.from({ length: 170 }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 1.3 + 0.3, p: Math.random() * TAU }));
+function drawSky(t) {
+  ctx.fillStyle = '#05080f'; ctx.fillRect(0, 0, W, H);
+  const g = ctx.createRadialGradient(W * 0.72, H * 0.25, 0, W * 0.72, H * 0.25, Math.max(W, H) * 0.8);
+  g.addColorStop(0, 'rgba(70,45,140,0.28)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#cfdcff';
+  for (const s of SKY) { ctx.globalAlpha = 0.3 + 0.3 * Math.sin(t * 1.4 + s.p); ctx.fillRect(s.x * W, s.y * H, s.r, s.r); }
+  ctx.globalAlpha = 1;
+}
+function burst(arr, x, y, n, color, speed) {
+  for (let i = 0; i < n; i++) { const a = rand(0, TAU), v = rand(0.2, 1) * speed; arr.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: rand(0.4, 0.9), c: color }); }
+}
+function stepParts(arr, dt) {
+  for (const p of arr) { p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.97; p.vy *= 0.97; p.life -= dt; }
+  return arr.filter(p => p.life > 0);
+}
+function drawParts(arr, sx = 1) {
+  ctx.globalCompositeOperation = 'lighter';
+  for (const p of arr) { ctx.globalAlpha = clamp(p.life * 1.5, 0, 1); ctx.fillStyle = p.c; ctx.fillRect(p.x * sx - 1.5, p.y * sx - 1.5, 3, 3); }
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+}
+
+/* ============ ① 星环工坊 ============ */
+const idle = {
+  hint: '<b>操作：</b>轻触恒星采集能量，轻触行星可以爆发收获；能量够了就点下方按钮建造新行星。',
+  init() { this.e = 0; this.pl = []; this.cost = 15; this.fl = []; this.pulse = 0; this.add(); },
+  geo() { return { cx: W / 2, cy: H * 0.45, S: Math.min(W, H * 0.82) }; },
+  add() {
+    const i = this.pl.length, hues = [195, 32, 280, 140, 350, 55];
+    this.pl.push({ k: 0.14 + i * 0.056, a: Math.random() * TAU, sp: 0.9 / (1 + i * 0.45), sz: 0.022 + (i % 3) * 0.008, h: hues[i % 6], rate: 1 + i * 2, flash: 0 });
+  },
+  rate() { return this.pl.reduce((s, p) => s + p.rate, 0); },
+  btn() { const w = Math.min(260, W - 32); return { x: W / 2 - w / 2, y: H - 56, w, h: 40 }; },
+  ppos(p) { const { cx, cy, S } = this.geo(); return [cx + Math.cos(p.a) * p.k * S, cy + Math.sin(p.a) * p.k * S]; },
+  update(dt) {
+    this.e += this.rate() * dt;
+    for (const p of this.pl) { p.a += p.sp * dt; p.flash = Math.max(0, p.flash - dt * 2); }
+    this.pulse = Math.max(0, this.pulse - dt * 2.5);
+    for (const f of this.fl) { f.y -= 32 * dt; f.life -= dt; }
+    this.fl = this.fl.filter(f => f.life > 0);
+  },
+  draw(t) {
+    drawSky(t);
+    const { cx, cy, S } = this.geo();
+    ctx.strokeStyle = 'rgba(140,170,255,0.16)'; ctx.lineWidth = 1;
+    for (const p of this.pl) { ctx.beginPath(); ctx.arc(cx, cy, p.k * S, 0, TAU); ctx.stroke(); }
+    ctx.globalCompositeOperation = 'lighter';
+    for (const p of this.pl) {
+      const [x, y] = this.ppos(p);
+      for (let j = 0; j < 3; j++) {
+        const f = (t * 0.7 + j / 3 + p.k * 3) % 1;
+        ctx.fillStyle = hsl(p.h, 90, 70, 0.7 * (1 - f));
+        ctx.beginPath(); ctx.arc(x + (cx - x) * f, y + (cy - y) * f, 1.8, 0, TAU); ctx.fill();
+      }
+    }
+    const sr = S * 0.07 * (1 + this.pulse * 0.18 + 0.03 * Math.sin(t * 3));
+    glow(cx, cy, sr * 3.4, 'rgba(255,180,80,0.45)');
+    ctx.globalCompositeOperation = 'source-over';
+    let g = ctx.createRadialGradient(cx - sr * 0.3, cy - sr * 0.3, sr * 0.1, cx, cy, sr);
+    g.addColorStop(0, '#fff7dc'); g.addColorStop(0.6, '#ffc35a'); g.addColorStop(1, '#ff863a');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, sr, 0, TAU); ctx.fill();
+    for (const p of this.pl) {
+      const [x, y] = this.ppos(p), r = p.sz * S * (1 + p.flash * 0.4);
+      if (p.flash > 0) { ctx.globalCompositeOperation = 'lighter'; glow(x, y, r * 3.2, hsl(p.h, 90, 65, 0.7 * p.flash)); ctx.globalCompositeOperation = 'source-over'; }
+      g = ctx.createRadialGradient(x - r * 0.4, y - r * 0.4, r * 0.1, x, y, r);
+      g.addColorStop(0, hsl(p.h, 85, 82)); g.addColorStop(1, hsl(p.h, 70, 32));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+    }
+    text('能量 ' + fmt(this.e), W / 2, 36, { size: 24, weight: 800, align: 'center', color: '#ffd780' });
+    text('+' + fmt(this.rate()) + ' / 秒 · 行星 ' + this.pl.length + '/6', W / 2, 56, { size: 12, align: 'center', color: '#8c98b4' });
+    for (const f of this.fl) { ctx.globalAlpha = clamp(f.life * 1.5, 0, 1); text(f.s, f.x, f.y, { size: 14, weight: 700, align: 'center', color: f.c }); }
+    ctx.globalAlpha = 1;
+    const b = this.btn(), full = this.pl.length >= 6, can = !full && this.e >= this.cost;
+    rrect(b.x, b.y, b.w, b.h, 10);
+    ctx.fillStyle = can ? '#ffcf6b' : 'rgba(255,255,255,0.07)'; ctx.fill();
+    ctx.strokeStyle = can ? '#ffcf6b' : 'rgba(255,255,255,0.15)'; ctx.stroke();
+    text(full ? '星系已满（完整版可「超新星重生」）' : `建造新行星 · ${fmt(this.cost)} 能量`, W / 2, b.y + b.h / 2 + 1,
+      { size: 14, weight: 700, align: 'center', base: 'middle', color: can ? '#1a1300' : '#8c98b4' });
+  },
+  down(x, y) {
+    const b = this.btn();
+    if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h) {
+      if (this.pl.length < 6 && this.e >= this.cost) {
+        this.e -= this.cost; this.cost = Math.round(this.cost * 2.3); this.add();
+        this.fl.push({ x: W / 2, y: b.y - 10, s: '新行星诞生！', life: 1.3, c: '#6be3ff' });
+      }
+      return;
+    }
+    const { cx, cy, S } = this.geo();
+    for (const p of this.pl) {
+      const [px, py] = this.ppos(p);
+      if (Math.hypot(x - px, y - py) < p.sz * S + 16) {
+        const gain = p.rate * 4; this.e += gain; p.flash = 1;
+        this.fl.push({ x: px, y: py - 14, s: '+' + fmt(gain), life: 1, c: hsl(p.h, 90, 75) }); return;
+      }
+    }
+    if (Math.hypot(x - cx, y - cy) < S * 0.07 + 22) {
+      const gain = 1 + this.pl.length; this.e += gain; this.pulse = 1;
+      this.fl.push({ x: cx, y: cy - S * 0.09, s: '+' + gain, life: 0.9, c: '#ffd780' });
+    }
+  }
+};
+
+/* ============ ② 引力信使 ============ */
+const sling = {
+  hint: '<b>操作：</b>在任意位置按住并往后拖来瞄准（虚线是预测轨迹），松手发射。借行星的引力，把信使送进发光的接收站。',
+  LV: [
+    { s: [0.1, 0.82], t: [0.88, 0.2], p: [[0.5, 0.5, 0.1]] },
+    { s: [0.08, 0.5], t: [0.92, 0.5], p: [[0.38, 0.3, 0.06], [0.62, 0.7, 0.075], [0.52, 0.5, 0.035]] },
+    { s: [0.5, 0.9], t: [0.5, 0.12], p: [[0.5, 0.5, 0.12]] },
+  ],
+  init() { this.lv = 0; this.tries = 0; this.setup(); },
+  randLevel() {
+    const p = [];
+    const n = Math.random() < 0.5 ? 2 : 3;
+    for (let k = 0; k < 60 && p.length < n; k++) {
+      const c = [rand(0.3, 0.7), rand(0.18, 0.82), rand(0.045, 0.095)];
+      if (p.every(q => Math.hypot((q[0] - c[0]) * this.ww, (q[1] - c[1]) * this.hh) > q[2] + c[2] + 0.12)) p.push(c);
+    }
+    return { s: [0.08, rand(0.2, 0.8)], t: [0.92, rand(0.2, 0.8)], p };
+  },
+  setup() {
+    const S = this.S = Math.min(W, H); this.ww = W / S; this.hh = H / S;
+    const L = this.LV[this.lv] || this.randLevel();
+    this.start = { x: L.s[0] * this.ww, y: L.s[1] * this.hh };
+    this.tgt = { x: L.t[0] * this.ww, y: L.t[1] * this.hh, r: 0.05 };
+    this.planets = L.p.map(([fx, fy, r], i) => ({ x: fx * this.ww, y: fy * this.hh, r, mu: 5.5 * r * r, h: [18, 205, 280, 140][i % 4] }));
+    this.state = 'aim'; this.probe = null; this.trail = []; this.drag = null; this.parts = []; this.msg = ''; this.timer = 0;
+  },
+  accel(x, y) {
+    let ax = 0, ay = 0;
+    for (const p of this.planets) {
+      const dx = p.x - x, dy = p.y - y, d2 = dx * dx + dy * dy + 1e-4, d = Math.sqrt(d2), a = p.mu / d2;
+      ax += a * dx / d; ay += a * dy / d;
+    }
+    return [ax, ay];
+  },
+  step(o, h) { const [ax, ay] = this.accel(o.x, o.y); o.vx += ax * h; o.vy += ay * h; o.x += o.vx * h; o.y += o.vy * h; },
+  check(o) {
+    for (const p of this.planets) if (Math.hypot(o.x - p.x, o.y - p.y) < p.r) return 'crash';
+    if (Math.hypot(o.x - this.tgt.x, o.y - this.tgt.y) < this.tgt.r) return 'win';
+    if (o.x < -0.3 || o.x > this.ww + 0.3 || o.y < -0.3 || o.y > this.hh + 0.3) return 'lost';
+    return null;
+  },
+  vel() {
+    let dx = (this.drag.sx - this.drag.x) / this.S, dy = (this.drag.sy - this.drag.y) / this.S;
+    const l = Math.hypot(dx, dy), m = 0.32;
+    if (l > m) { dx *= m / l; dy *= m / l; }
+    return [dx * 2.4, dy * 2.4];
+  },
+  update(dt) {
+    this.parts = stepParts(this.parts, dt);
+    if (this.state === 'fly') {
+      const sub = 8, h = dt / sub;
+      for (let i = 0; i < sub; i++) {
+        this.step(this.probe, h);
+        const r = this.check(this.probe);
+        if (r) { this.finish(r); break; }
+      }
+      this.trail.push([this.probe.x, this.probe.y]);
+      this.timer += dt;
+      if (this.state === 'fly' && this.timer > 9) this.finish('lost');
+    } else if (this.state === 'end') {
+      this.endT -= dt;
+      if (this.endT <= 0) { if (this.won) { this.lv++; this.tries = 0; } this.setup(); }
+    }
+  },
+  finish(r) {
+    this.state = 'end'; this.won = r === 'win'; this.endT = this.won ? 1.6 : 1.1;
+    const o = this.probe;
+    if (r === 'crash') { this.msg = '坠毁！再试一次'; burst(this.parts, o.x * this.S, o.y * this.S, 40, '#ffb36b', 160); }
+    if (r === 'lost') this.msg = '迷失在深空……';
+    if (r === 'win') { this.msg = this.tries === 1 ? '一次送达，完美！' : `送达！共尝试 ${this.tries} 次`; burst(this.parts, this.tgt.x * this.S, this.tgt.y * this.S, 60, '#6be3ff', 200); }
+  },
+  draw(t) {
+    drawSky(t);
+    const S = this.S, X = v => v * S;
+    for (const p of this.planets) {
+      ctx.setLineDash([3, 6]); ctx.strokeStyle = hsl(p.h, 60, 60, 0.12);
+      for (let k = 2; k <= 3.5; k += 0.75) { ctx.beginPath(); ctx.arc(X(p.x), X(p.y), X(p.r) * k, 0, TAU); ctx.stroke(); }
+      ctx.setLineDash([]);
+      const g = ctx.createRadialGradient(X(p.x - p.r * 0.35), X(p.y - p.r * 0.35), 2, X(p.x), X(p.y), X(p.r));
+      g.addColorStop(0, hsl(p.h, 75, 72)); g.addColorStop(1, hsl(p.h, 60, 24));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(X(p.x), X(p.y), X(p.r), 0, TAU); ctx.fill();
+    }
+    const tg = this.tgt;
+    ctx.globalCompositeOperation = 'lighter';
+    glow(X(tg.x), X(tg.y), X(tg.r) * 2.2, 'rgba(107,227,255,0.35)');
+    ctx.globalCompositeOperation = 'source-over';
+    for (let k = 0; k < 3; k++) {
+      const f = (t * 0.6 + k / 3) % 1;
+      ctx.strokeStyle = `rgba(107,227,255,${0.8 * (1 - f)})`; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(X(tg.x), X(tg.y), X(tg.r) * (0.4 + f * 0.9), 0, TAU); ctx.stroke();
+    }
+    text('接收站', X(tg.x), X(tg.y) + X(tg.r) + 16, { size: 12, align: 'center', color: '#6be3ff' });
+    ctx.strokeStyle = 'rgba(255,207,107,0.5)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(X(this.start.x), X(this.start.y), 14, 0, TAU); ctx.stroke();
+    if (this.trail.length > 1) {
+      ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = 'rgba(255,207,107,0.75)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(X(this.trail[0][0]), X(this.trail[0][1]));
+      for (const [x, y] of this.trail) ctx.lineTo(X(x), X(y));
+      ctx.stroke(); ctx.globalCompositeOperation = 'source-over';
+    }
+    if (this.state === 'aim' && this.drag) {
+      const [vx, vy] = this.vel();
+      const o = { x: this.start.x, y: this.start.y, vx, vy };
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(X(this.start.x), X(this.start.y)); ctx.lineTo(this.drag.x, this.drag.y); ctx.stroke(); ctx.setLineDash([]);
+      for (let i = 0; i < 60; i++) {
+        for (let k = 0; k < 4; k++) this.step(o, 1 / 240);
+        if (this.check(o)) break;
+        if (i % 2 === 0) { ctx.fillStyle = `rgba(255,230,170,${0.9 * (1 - i / 60)})`; ctx.beginPath(); ctx.arc(X(o.x), X(o.y), 2, 0, TAU); ctx.fill(); }
+      }
+      text('力度 ' + Math.round(Math.hypot(vx, vy) / 0.768 * 100) + '%', X(this.start.x) + 18, X(this.start.y) - 18, { size: 12, color: '#ffcf6b' });
+    }
+    const pr = this.state === 'aim' ? this.start : (this.state === 'fly' ? this.probe : null);
+    if (pr) { ctx.globalCompositeOperation = 'lighter'; glow(X(pr.x), X(pr.y), 16, 'rgba(255,230,160,0.8)'); ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(X(pr.x), X(pr.y), 4, 0, TAU); ctx.fill(); }
+    drawParts(this.parts);
+    text(`第 ${this.lv + 1} 关${this.lv >= this.LV.length ? '（随机生成）' : ''}`, 14, 26, { size: 15, weight: 700 });
+    text(`尝试 ${this.tries} 次`, 14, 46, { size: 12, color: '#8c98b4' });
+    if (this.msg) text(this.msg, W / 2, H / 2, { size: 26, weight: 800, align: 'center', base: 'middle', color: this.won ? '#6be3ff' : '#ffb36b' });
+  },
+  down(x, y) { if (this.state === 'aim') this.drag = { sx: x, sy: y, x, y }; },
+  move(x, y) { if (this.drag) { this.drag.x = x; this.drag.y = y; } },
+  up() {
+    if (this.state !== 'aim' || !this.drag) return;
+    const [vx, vy] = this.vel();
+    if (Math.hypot(vx, vy) > 0.06) {
+      this.probe = { x: this.start.x, y: this.start.y, vx, vy }; this.trail = []; this.state = 'fly'; this.timer = 0; this.tries++;
+    }
+    this.drag = null;
+  }
+};
+
+/* ============ ③ 视差星图 ============ */
+const para = {
+  hint: '<b>操作：</b>拖动来旋转星空视角。这些星星其实散落在三维空间里，只有转到某个角度才会连成图案，看底部的「共鸣度」找方向。',
+  SH: [
+    { name: '星帆座', story: '传说第一位远航者用星光织成风帆，至今仍在银河里顺风而行。',
+      pts: [[-0.8, 0.3], [0.8, 0.3], [0.5, 0.62], [-0.5, 0.62], [0, -0.85], [0.68, 0.08], [0, 0.3], [-0.45, -0.1]],
+      edges: [[0, 1], [1, 2], [2, 3], [3, 0], [6, 4], [4, 5], [5, 6], [4, 7], [7, 6]] },
+    { name: '灯狐座', story: '一只提着灯的狐狸，替迷路的彗星照亮回家的路。',
+      pts: [[-0.75, -0.85], [-0.45, -0.45], [-0.95, -0.35], [0.1, -0.1], [0.3, 0.45], [-0.35, 0.45], [0.8, 0.05], [0.95, -0.55]],
+      edges: [[0, 1], [0, 2], [1, 2], [1, 3], [3, 4], [4, 5], [5, 2], [3, 6], [6, 7]] },
+    { name: '星鲸座', story: '它每千年浮出星海换一次气，喷出的水雾成了新的星云。',
+      pts: [[-0.9, 0], [-0.5, -0.4], [0.2, -0.45], [0.65, -0.15], [0.95, -0.5], [0.95, 0.2], [0.4, 0.25], [-0.3, 0.35], [-0.35, -0.85]],
+      edges: [[0, 1], [1, 2], [2, 3], [3, 4], [3, 5], [3, 6], [6, 7], [7, 0], [1, 8]] },
+  ],
+  init() { this.i = 0; this.found = 0; this.setup(); },
+  setup() {
+    const sh = this.sh = this.SH[this.i % this.SH.length];
+    this.pts = sh.pts.map(([x, y]) => ({ x, y, z: rand(-1, 1) }));
+    this.dis = Array.from({ length: 12 }, () => ({ x: rand(-1.15, 1.15), y: rand(-1, 1), z: rand(-1, 1) }));
+    this.yaw = (Math.random() < 0.5 ? -1 : 1) * rand(0.9, 1.5);
+    this.pitch = (Math.random() < 0.5 ? -1 : 1) * rand(0.5, 0.9);
+    this.state = 'play'; this.prog = 0; this.lt = 0; this.drag = null;
+  },
+  proj(p) {
+    const cy = Math.cos(this.yaw), sy = Math.sin(this.yaw), cp = Math.cos(this.pitch), sp = Math.sin(this.pitch);
+    const x1 = p.x * cy - p.z * sy, z1 = p.x * sy + p.z * cy;
+    const y2 = p.y * cp - z1 * sp, z2 = p.y * sp + z1 * cp;
+    const R = Math.min(W, H) * 0.34;
+    return { X: W / 2 + x1 * R, Y: H * 0.47 + y2 * R, z: z2 };
+  },
+  dist() { return Math.hypot(this.yaw, this.pitch); },
+  update(dt) {
+    if (this.state === 'play') {
+      if (this.dist() < 0.08) { this.state = 'lock'; this.found++; this.drag = null; }
+    } else {
+      const k = 1 - Math.exp(-dt * 8);
+      this.yaw -= this.yaw * k; this.pitch -= this.pitch * k;
+      this.prog = Math.min(1, this.prog + dt / 1.4); this.lt += dt;
+      if (this.lt > 4.2) { this.i++; this.setup(); }
+    }
+  },
+  draw(t) {
+    drawSky(t);
+    const lock = this.state === 'lock';
+    const P = this.pts.map(p => this.proj(p));
+    if (lock) {
+      ctx.globalCompositeOperation = 'lighter';
+      glow(W / 2, H * 0.47, Math.min(W, H) * 0.5, `rgba(255,200,110,${0.12 * this.prog})`);
+      const E = this.sh.edges.length;
+      ctx.strokeStyle = '#ffd27a'; ctx.lineWidth = 2; ctx.shadowColor = '#ffb84d'; ctx.shadowBlur = 12;
+      this.sh.edges.forEach(([a, b], k) => {
+        const f = clamp(this.prog * E - k, 0, 1);
+        if (f <= 0) return;
+        ctx.beginPath(); ctx.moveTo(P[a].X, P[a].Y); ctx.lineTo(P[a].X + (P[b].X - P[a].X) * f, P[a].Y + (P[b].Y - P[a].Y) * f); ctx.stroke();
+      });
+      ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'source-over';
+    }
+    const all = P.map(p => ({ ...p, s: 1 })).concat(this.dis.map(p => ({ ...this.proj(p), s: 0 })));
+    all.sort((a, b) => b.z - a.z);
+    ctx.globalCompositeOperation = 'lighter';
+    for (const p of all) {
+      const r = 1.6 + (1.8 - p.z) * 0.9;
+      const gold = lock && p.s;
+      glow(p.X, p.Y, r * 5, gold ? 'rgba(255,200,110,0.55)' : 'rgba(170,200,255,0.35)');
+      ctx.fillStyle = gold ? '#fff2cf' : '#e6eeff';
+      ctx.beginPath(); ctx.arc(p.X, p.Y, r, 0, TAU); ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    const res = lock ? 1 : Math.pow(clamp(1 - this.dist() / 1.8, 0, 1), 1.6);
+    const bw = Math.min(240, W - 60), bx = W / 2 - bw / 2, by = H - 34;
+    text('共鸣度', W / 2, by - 8, { size: 12, align: 'center', color: '#8c98b4' });
+    rrect(bx, by, bw, 8, 4); ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fill();
+    rrect(bx, by, Math.max(8, bw * res), 8, 4); ctx.fillStyle = res > 0.8 ? '#ffd27a' : '#6be3ff'; ctx.fill();
+    text(`已点亮 ${this.found} 个星座`, 14, 26, { size: 13, color: '#8c98b4' });
+    if (lock) {
+      const a = clamp(this.prog * 1.6 - 0.4, 0, 1);
+      ctx.globalAlpha = a;
+      text(this.sh.name, W / 2, 50, { size: 28, weight: 800, align: 'center', color: '#ffd27a' });
+      text(this.sh.story, W / 2, 76, { size: Math.min(14, W / 26), align: 'center', color: '#e8dcc0' });
+      ctx.globalAlpha = 1;
+    }
+  },
+  down(x, y) { if (this.state === 'play') this.drag = { x, y }; },
+  move(x, y) {
+    if (!this.drag) return;
+    const norm = a => Math.atan2(Math.sin(a), Math.cos(a));
+    this.yaw = norm(this.yaw + (x - this.drag.x) * 0.006);
+    this.pitch = norm(this.pitch - (y - this.drag.y) * 0.006);
+    this.drag = { x, y };
+  },
+  up() { this.drag = null; }
+};
+
+/* ============ ④ 碎岩带求生 ============ */
+const surv = {
+  hint: '<b>操作：</b>移动鼠标（手机上按住拖动）驾驶飞船，武器会自动开火。击碎小行星，拾取蓝色晶体补充氧气，被撞 3 次或氧气耗尽就失败。',
+  init() {
+    this.S = Math.min(W, H);
+    this.ship = { x: W / 2, y: H / 2, a: -Math.PI / 2 }; this.tx = W / 2; this.ty = H / 2;
+    this.ast = []; this.bul = []; this.gems = []; this.parts = [];
+    this.o2 = 100; this.hull = 3; this.time = 0; this.spawn = 0.6; this.fire = 0; this.inv = 0; this.shake = 0; this.score = 0; this.over = false;
+    for (let i = 0; i < 3; i++) this.spawnAst(3);
+  },
+  spawnAst(tier, x, y) {
+    const S = this.S, r = S * [0, 0.022, 0.036, 0.056][tier];
+    let vx, vy;
+    if (x === undefined) {
+      const side = Math.floor(Math.random() * 4);
+      x = side === 0 ? -r : side === 1 ? W + r : rand(0, W);
+      y = side === 0 || side === 1 ? rand(0, H) : side === 2 ? -r : H + r;
+      const a = Math.atan2(H / 2 - y + rand(-H * 0.3, H * 0.3), W / 2 - x + rand(-W * 0.3, W * 0.3));
+      const sp = S * rand(0.08, 0.17) * (1 + this.time * 0.012);
+      vx = Math.cos(a) * sp; vy = Math.sin(a) * sp;
+    } else {
+      const a = rand(0, TAU), sp = S * rand(0.12, 0.25); vx = Math.cos(a) * sp; vy = Math.sin(a) * sp;
+    }
+    const verts = Array.from({ length: 9 }, () => rand(0.72, 1.15));
+    this.ast.push({ x, y, vx, vy, r, tier, verts, rot: rand(0, TAU), vr: rand(-1.5, 1.5), dead: false });
+  },
+  nearest() {
+    let best = null, bd = Infinity;
+    for (const a of this.ast) { const d = Math.hypot(a.x - this.ship.x, a.y - this.ship.y); if (d < bd) { bd = d; best = a; } }
+    return [best, bd];
+  },
+  hitAst(a) {
+    a.dead = true;
+    burst(this.parts, a.x, a.y, 8 + a.tier * 6, '#b9a8ff', this.S * 0.4);
+    if (a.tier > 1) { this.spawnAst(a.tier - 1, a.x, a.y); this.spawnAst(a.tier - 1, a.x, a.y); }
+    if (a.tier === 1 || (a.tier === 2 && Math.random() < 0.5)) this.gems.push({ x: a.x, y: a.y, life: 8 });
+  },
+  update(dt) {
+    this.parts = stepParts(this.parts, dt);
+    if (this.over) return;
+    const S = this.S, sh = this.ship;
+    this.time += dt; this.o2 -= dt * 4.5; this.inv -= dt; this.shake = Math.max(0, this.shake - dt * 3);
+    const dx = this.tx - sh.x, dy = this.ty - sh.y, d = Math.hypot(dx, dy);
+    if (d > 1) { const sp = Math.min(d * 6, S * 0.9) * dt; sh.x += dx / d * Math.min(sp, d); sh.y += dy / d * Math.min(sp, d); }
+    const [na, nd] = this.nearest();
+    if (na) sh.a = Math.atan2(na.y - sh.y, na.x - sh.x);
+    this.spawn -= dt;
+    if (this.spawn <= 0) { this.spawnAst(Math.random() < 0.6 ? 3 : 2); this.spawn = Math.max(0.45, 1.3 - this.time * 0.03); }
+    this.fire -= dt;
+    if (this.fire <= 0 && na && nd < S * 0.9) {
+      const v = S * 1.5; this.bul.push({ x: sh.x, y: sh.y, vx: Math.cos(sh.a) * v, vy: Math.sin(sh.a) * v, life: 1.1 }); this.fire = 0.16;
+    }
+    for (const b of this.bul) { b.x += b.vx * dt; b.y += b.vy * dt; b.life -= dt; }
+    for (const a of this.ast) { a.x += a.vx * dt; a.y += a.vy * dt; a.rot += a.vr * dt; }
+    for (const b of this.bul) {
+      if (b.life <= 0) continue;
+      for (const a of this.ast) if (!a.dead && Math.hypot(a.x - b.x, a.y - b.y) < a.r) { b.life = 0; this.hitAst(a); break; }
+    }
+    for (const a of this.ast) {
+      if (!a.dead && this.inv <= 0 && Math.hypot(a.x - sh.x, a.y - sh.y) < a.r * 0.85 + S * 0.02) {
+        this.hull--; this.inv = 1.2; this.shake = 1; this.hitAst(a);
+        burst(this.parts, sh.x, sh.y, 20, '#ff8a6b', S * 0.5);
+      }
+    }
+    const m = 100;
+    this.ast = this.ast.filter(a => !a.dead && a.x > -m - a.r && a.x < W + m + a.r && a.y > -m - a.r && a.y < H + m + a.r);
+    this.bul = this.bul.filter(b => b.life > 0);
+    for (const g of this.gems) {
+      g.life -= dt;
+      const gx = sh.x - g.x, gy = sh.y - g.y, gd = Math.hypot(gx, gy);
+      if (gd < S * 0.2) { const sp = S * 1.2 * dt; g.x += gx / gd * Math.min(sp, gd); g.y += gy / gd * Math.min(sp, gd); }
+      if (gd < S * 0.03) { g.life = 0; this.o2 = Math.min(100, this.o2 + 9); this.score++; }
+    }
+    this.gems = this.gems.filter(g => g.life > 0);
+    if (this.hull <= 0) { this.over = true; this.reason = '船体损毁'; }
+    else if (this.o2 <= 0) { this.over = true; this.reason = '氧气耗尽'; }
+  },
+  draw(t) {
+    drawSky(t);
+    const S = this.S, sh = this.ship;
+    ctx.save();
+    if (this.shake > 0) ctx.translate(rand(-1, 1) * this.shake * 6, rand(-1, 1) * this.shake * 6);
+    for (const a of this.ast) {
+      ctx.beginPath();
+      a.verts.forEach((v, i) => { const ang = a.rot + i / a.verts.length * TAU; const px = a.x + Math.cos(ang) * a.r * v, py = a.y + Math.sin(ang) * a.r * v; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+      ctx.closePath(); ctx.fillStyle = '#2b2740'; ctx.fill(); ctx.strokeStyle = '#8f84c2'; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    for (const g of this.gems) {
+      glow(g.x, g.y, 14, 'rgba(107,227,255,0.5)');
+      const s = 5 + Math.sin(t * 6) * 1;
+      ctx.fillStyle = '#bff4ff'; ctx.beginPath(); ctx.moveTo(g.x, g.y - s); ctx.lineTo(g.x + s * 0.7, g.y); ctx.lineTo(g.x, g.y + s); ctx.lineTo(g.x - s * 0.7, g.y); ctx.closePath(); ctx.fill();
+    }
+    ctx.strokeStyle = '#8ff0ff'; ctx.lineWidth = 2;
+    for (const b of this.bul) { ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(b.x - b.vx * 0.02, b.y - b.vy * 0.02); ctx.stroke(); }
+    ctx.globalCompositeOperation = 'source-over';
+    drawParts(this.parts);
+    if (!this.over && (this.inv <= 0 || Math.floor(t * 12) % 2)) {
+      ctx.save(); ctx.translate(sh.x, sh.y); ctx.rotate(sh.a);
+      const s = S * 0.028;
+      ctx.globalCompositeOperation = 'lighter'; glow(-s * 1.1, 0, s * (0.9 + Math.random() * 0.4), 'rgba(255,160,80,0.8)'); ctx.globalCompositeOperation = 'source-over';
+      ctx.beginPath(); ctx.moveTo(s * 1.3, 0); ctx.lineTo(-s, -s * 0.8); ctx.lineTo(-s * 0.5, 0); ctx.lineTo(-s, s * 0.8); ctx.closePath();
+      ctx.fillStyle = '#eef3ff'; ctx.fill(); ctx.strokeStyle = '#6be3ff'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();
+    text('氧气', 14, 24, { size: 12, color: '#8c98b4' });
+    rrect(46, 15, 120, 10, 5); ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fill();
+    rrect(46, 15, Math.max(10, 120 * clamp(this.o2, 0, 100) / 100), 10, 5); ctx.fillStyle = this.o2 < 30 ? '#ff7e7e' : '#6be3ff'; ctx.fill();
+    text('船体 ' + '■'.repeat(Math.max(0, this.hull)) + '□'.repeat(3 - Math.max(0, this.hull)), 14, 46, { size: 12, color: '#ffcf6b' });
+    text(`${this.time.toFixed(1)} 秒 · 晶体 ${this.score}`, W - 14, 24, { size: 13, align: 'right', color: '#e7ecf6' });
+    if (this.over) {
+      ctx.fillStyle = 'rgba(5,8,15,0.6)'; ctx.fillRect(0, 0, W, H);
+      text('任务失败 · ' + this.reason, W / 2, H / 2 - 18, { size: 26, weight: 800, align: 'center', color: '#ff9b7e' });
+      text(`坚持了 ${this.time.toFixed(1)} 秒，收集晶体 ${this.score} 个`, W / 2, H / 2 + 14, { size: 14, align: 'center', color: '#e7ecf6' });
+      text('点击画面再来一局', W / 2, H / 2 + 40, { size: 13, align: 'center', color: '#8c98b4' });
+    }
+  },
+  down(x, y) { if (this.over) { this.init(); return; } this.tx = x; this.ty = y; },
+  move(x, y) { this.tx = x; this.ty = y; }
+};
+
+/* ============ ⑤ 深空回声 ============ */
+const TYPES = [
+  { k: 'supply', g: '补', c: '#7be3a0', w: 25 }, { k: 'wreck', g: '残', c: '#d4ad74', w: 25 },
+  { k: 'signal', g: '信', c: '#6bb8ff', w: 25 }, { k: 'trader', g: '商', c: '#ffcf6b', w: 12 }, { k: 'nebula', g: '云', c: '#c48bff', w: 13 },
+];
+function pickType() { let r = Math.random() * 100; for (const t of TYPES) { if ((r -= t.w) < 0) return t; } return TYPES[0]; }
+const rogue = {
+  hint: '<b>操作：</b>点击发光的相邻星系进行跃迁，每跳消耗 1 燃料。补＝补给站、残＝残骸、信＝未知信号、商＝行商、云＝星云。活着抵达最右侧的信标就进入下一个星区。',
+  init() { this.sector = 1; this.fuel = 5; this.hull = 3; this.scrap = 0; this.log = ['引擎预热完毕。燃料有限，规划好路线。']; this.over = false; this.pending = 0; this.gen(); },
+  gen() {
+    const L = 6; this.layers = [];
+    for (let i = 0; i < L; i++) {
+      const n = i === 0 || i === L - 1 ? 1 : Math.random() < 0.5 ? 2 : 3, arr = [];
+      for (let j = 0; j < n; j++) arr.push({ i, j, n, type: i === 0 ? { k: 'start', g: '起', c: '#8c98b4' } : i === L - 1 ? { k: 'beacon', g: '标', c: '#ffcf6b' } : pickType(), jx: rand(-1, 1), jy: rand(-1, 1), out: [], visited: i === 0 });
+      this.layers.push(arr);
+    }
+    for (let i = 0; i < L - 1; i++) {
+      const A = this.layers[i], B = this.layers[i + 1];
+      A.forEach((a, ja) => {
+        const base = Math.round(A.length === 1 ? (B.length - 1) / 2 : ja / (A.length - 1) * (B.length - 1));
+        const add = b => { if (b && !a.out.includes(b)) a.out.push(b); };
+        add(B[base]);
+        if (Math.random() < 0.6) add(B[base + (Math.random() < 0.5 ? -1 : 1)]);
+        if (A.length === 1) B.forEach(add);
+      });
+      B.forEach(b => { if (!A.some(a => a.out.includes(b))) A[Math.floor(Math.random() * A.length)].out.push(b); });
+    }
+    this.at = this.layers[0][0]; this.moving = null;
+  },
+  pos(nd) {
+    const L = this.layers.length, mapH = H * 0.68;
+    const u = nd.i / (L - 1), v = (nd.j + 1) / (nd.n + 1);
+    const edge = nd.i === 0 || nd.i === L - 1;
+    return [W * (0.08 + u * 0.84) + (edge ? 0 : nd.jx * W * 0.025), mapH * (0.12 + v * 0.76) + (edge ? 0 : nd.jy * mapH * 0.06)];
+  },
+  addLog(s) { this.log.push(s); if (this.log.length > 3) this.log.shift(); },
+  resolve(nd) {
+    nd.visited = true;
+    const k = nd.type.k;
+    if (k === 'supply') { this.fuel += 2; this.addLog('废弃补给站：燃料 +2'); }
+    else if (k === 'wreck') { if (Math.random() < 0.6) { this.scrap += 2; this.addLog('打捞残骸：零件 +2'); } else { this.hull--; this.scrap++; this.addLog('残骸里有自爆装置！船体 -1，零件 +1'); } }
+    else if (k === 'signal') {
+      const r = Math.random();
+      if (r < 0.35) { this.hull = Math.min(5, this.hull + 1); this.addLog('救下一名工程师：船体 +1'); }
+      else if (r < 0.7) { this.hull--; this.addLog('信号是海盗的陷阱：船体 -1'); }
+      else { this.fuel++; this.addLog('古老信标更新了星图：燃料 +1'); }
+    }
+    else if (k === 'trader') { if (this.scrap >= 2) { this.scrap -= 2; this.hull = Math.min(5, this.hull + 1); this.addLog('行商收 2 零件帮你补好船体：船体 +1'); } else this.addLog('行商：零件不够，只换到一杯热可可。'); }
+    else if (k === 'nebula') { if (Math.random() < 0.5) { this.fuel--; this.addLog('电离星云干扰引擎：燃料 -1'); } else { this.scrap++; this.addLog('星云中采到稀有气体：零件 +1'); } }
+    else if (k === 'beacon') { this.addLog(`抵达信标！进入第 ${this.sector + 1} 星区，燃料 +1`); this.sector++; this.fuel++; this.pending = 1; return; }
+    if (this.hull <= 0) { this.over = true; this.reason = '飞船解体了'; }
+    else if (this.fuel <= 0) { this.over = true; this.reason = '燃料耗尽，在深空中漂流'; }
+  },
+  update(dt) {
+    if (this.pending > 0) { this.pending -= dt; if (this.pending <= 0) this.gen(); }
+    if (this.moving) { this.moving.t += dt / 0.7; if (this.moving.t >= 1) { this.at = this.moving.to; this.moving = null; this.resolve(this.at); } }
+  },
+  draw(t) {
+    drawSky(t);
+    const reach = this.moving || this.over || this.pending > 0 ? [] : this.at.out;
+    ctx.lineWidth = 1.5;
+    for (const layer of this.layers) for (const a of layer) for (const b of a.out) {
+      const [x1, y1] = this.pos(a), [x2, y2] = this.pos(b);
+      const r = a === this.at && reach.includes(b);
+      ctx.strokeStyle = r ? 'rgba(255,207,107,0.85)' : 'rgba(140,160,210,0.18)';
+      ctx.setLineDash(r ? [6, 6] : []); ctx.lineDashOffset = -t * 20;
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    const R = Math.max(13, Math.min(19, W / 32));
+    for (const layer of this.layers) for (const nd of layer) {
+      const [x, y] = this.pos(nd), r = reach.includes(nd);
+      if (r || nd.type.k === 'beacon') { ctx.globalCompositeOperation = 'lighter'; glow(x, y, R * (2.2 + 0.4 * Math.sin(t * 4)), nd.type.c + '55'); ctx.globalCompositeOperation = 'source-over'; }
+      ctx.beginPath(); ctx.arc(x, y, R, 0, TAU);
+      ctx.fillStyle = nd.visited ? '#1a2238' : '#0d1322'; ctx.fill();
+      ctx.strokeStyle = nd.visited ? '#3a4566' : nd.type.c; ctx.lineWidth = r ? 2.5 : 1.5; ctx.stroke();
+      text(nd.type.g, x, y + 1, { size: R * 0.9, weight: 700, align: 'center', base: 'middle', color: nd.visited ? '#56627f' : nd.type.c });
+    }
+    let sx, sy;
+    if (this.moving) { const [x1, y1] = this.pos(this.moving.from), [x2, y2] = this.pos(this.moving.to), f = this.moving.t; sx = x1 + (x2 - x1) * f; sy = y1 + (y2 - y1) * f; }
+    else [sx, sy] = this.pos(this.at);
+    ctx.save(); ctx.translate(sx, sy - R - 10); ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.moveTo(0, 6); ctx.lineTo(-6, -4); ctx.lineTo(6, -4); ctx.closePath(); ctx.fill(); ctx.restore();
+    const py = H * 0.7;
+    ctx.fillStyle = 'rgba(10,15,28,0.92)'; ctx.fillRect(0, py, W, H - py);
+    ctx.strokeStyle = '#1e2945'; ctx.beginPath(); ctx.moveTo(0, py); ctx.lineTo(W, py); ctx.stroke();
+    text(`燃料 ${this.fuel}   船体 ${this.hull}   零件 ${this.scrap}`, 14, py + 24, { size: 14, weight: 700, color: '#ffcf6b' });
+    text(`第 ${this.sector} 星区`, W - 14, py + 24, { size: 13, align: 'right', color: '#8c98b4' });
+    const fs = Math.min(13, W / 30);
+    this.log.forEach((s, i) => text('› ' + s, 14, py + 48 + i * (fs + 7), { size: fs, color: i === this.log.length - 1 ? '#e7ecf6' : '#6b7694' }));
+    if (this.over) {
+      ctx.fillStyle = 'rgba(5,8,15,0.65)'; ctx.fillRect(0, 0, W, H);
+      text('信号中断 · ' + this.reason, W / 2, H / 2 - 10, { size: Math.min(24, W / 18), weight: 800, align: 'center', color: '#ff9b7e' });
+      text(`你抵达了第 ${this.sector} 星区。点击重新出发`, W / 2, H / 2 + 20, { size: 13, align: 'center', color: '#8c98b4' });
+    }
+  },
+  down(x, y) {
+    if (this.over) { this.init(); return; }
+    if (this.moving || this.pending > 0) return;
+    const R = Math.max(13, Math.min(19, W / 32));
+    for (const nd of this.at.out) {
+      const [nx, ny] = this.pos(nd);
+      if (Math.hypot(x - nx, y - ny) < R + 12) { this.fuel--; this.moving = { from: this.at, to: nd, t: 0 }; return; }
+    }
+  }
+};
+
+/* ============ ⑥ 星海花园 ============ */
+const garden = {
+  hint: '<b>操作：</b>轻点空白处，放入一颗会自动进入轨道的行星；按住拖动可以按方向把它甩出去。天体相撞会合并并发光。',
+  init() {
+    const S = this.S = Math.min(W, H); this.ww = W / S; this.hh = H / S;
+    this.sun = { x: this.ww / 2, y: this.hh / 2, vx: 0, vy: 0, m: 0.06, r: 0.05, h: 40, sun: true, trail: [] };
+    this.b = [this.sun]; this.fx = []; this.drag = null;
+    for (let i = 0; i < 6; i++) { const a = rand(0, TAU), d = 0.12 + i * 0.058; this.orbitAt(this.sun.x + Math.cos(a) * d, this.sun.y + Math.sin(a) * d); }
+  },
+  rad(m) { return 0.006 + Math.sqrt(m) * 0.32; },
+  add(x, y, vx, vy, m) {
+    m = m || rand(0.0003, 0.0015);
+    this.b.push({ x, y, vx, vy, m, r: this.rad(m), h: Math.floor(rand(170, 340)), trail: [] });
+    if (this.b.length > 90) this.b.splice(1, 1);
+  },
+  orbitAt(x, y) {
+    const s = this.sun, dx = x - s.x, dy = y - s.y, d = Math.hypot(dx, dy);
+    if (d < s.r * 1.6) return;
+    const v = Math.sqrt(s.m / d) * rand(0.95, 1.05);
+    this.add(x, y, -dy / d * v, dx / d * v);
+  },
+  update(dt) {
+    const B = this.b, sub = 4, h = dt / sub;
+    for (let s = 0; s < sub; s++) {
+      for (const p of B) {
+        if (p.sun) continue;
+        let ax = 0, ay = 0;
+        for (const q of B) {
+          if (q === p) continue;
+          const dx = q.x - p.x, dy = q.y - p.y, d2 = dx * dx + dy * dy + 0.0006, inv = q.m / (d2 * Math.sqrt(d2));
+          ax += dx * inv; ay += dy * inv;
+        }
+        p.vx += ax * h; p.vy += ay * h;
+      }
+      for (const p of B) if (!p.sun) { p.x += p.vx * h; p.y += p.vy * h; }
+    }
+    for (let i = 0; i < B.length; i++) for (let j = i + 1; j < B.length; j++) {
+      const a = B[i], c = B[j];
+      if (a.dead || c.dead) continue;
+      if (Math.hypot(a.x - c.x, a.y - c.y) < (a.r + c.r) * 0.85) {
+        const [big, small] = a.sun || (!c.sun && a.m >= c.m) ? [a, c] : [c, a];
+        const M = big.m + small.m;
+        if (!big.sun) { big.vx = (big.vx * big.m + small.vx * small.m) / M; big.vy = (big.vy * big.m + small.vy * small.m) / M; big.r = this.rad(M); big.h = Math.round((big.h * big.m + small.h * small.m) / M); }
+        else big.r = Math.min(0.07, big.r + 0.0015);
+        big.m = big.sun ? big.m : M; small.dead = true;
+        this.fx.push({ x: small.x, y: small.y, t: 0, h: big.sun ? 40 : big.h });
+      }
+    }
+    this.b = B.filter(p => !p.dead && Math.hypot(p.x - this.ww / 2, p.y - this.hh / 2) < 3);
+    for (const p of this.b) if (!p.sun) { p.trail.push(p.x, p.y); if (p.trail.length > 280) p.trail.splice(0, 2); }
+    for (const f of this.fx) f.t += dt;
+    this.fx = this.fx.filter(f => f.t < 1);
+  },
+  draw(t) {
+    drawSky(t);
+    const S = this.S;
+    ctx.globalCompositeOperation = 'lighter'; ctx.lineWidth = 1.5;
+    for (const p of this.b) {
+      const tr = p.trail, n = tr.length / 2;
+      if (n < 2) continue;
+      const chunks = 5;
+      for (let c = 0; c < chunks; c++) {
+        const s0 = Math.floor(c * n / chunks), s1 = Math.min(n - 1, Math.floor((c + 1) * n / chunks));
+        if (s1 <= s0) continue;
+        ctx.strokeStyle = hsl(p.h, 90, 65, 0.08 + 0.12 * c);
+        ctx.beginPath(); ctx.moveTo(tr[s0 * 2] * S, tr[s0 * 2 + 1] * S);
+        for (let k = s0 + 1; k <= s1; k++) ctx.lineTo(tr[k * 2] * S, tr[k * 2 + 1] * S);
+        ctx.stroke();
+      }
+    }
+    for (const p of this.b) {
+      const x = p.x * S, y = p.y * S, r = p.r * S;
+      if (p.sun) { glow(x, y, r * 4, 'rgba(255,170,80,0.45)'); glow(x, y, r * 1.4, 'rgba(255,230,170,0.9)'); }
+      else { glow(x, y, r * 3, hsl(p.h, 90, 65, 0.4)); ctx.fillStyle = hsl(p.h, 90, 85); ctx.beginPath(); ctx.arc(x, y, Math.max(1.5, r * 0.7), 0, TAU); ctx.fill(); }
+    }
+    for (const f of this.fx) {
+      ctx.strokeStyle = hsl(f.h, 90, 70, 1 - f.t); ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(f.x * S, f.y * S, 6 + f.t * 40, 0, TAU); ctx.stroke();
+      glow(f.x * S, f.y * S, 30 * (1 - f.t), hsl(f.h, 90, 70, 0.6 * (1 - f.t)));
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    if (this.drag && Math.hypot(this.drag.x - this.drag.sx, this.drag.y - this.drag.sy) > 8) {
+      const { sx, sy, x, y } = this.drag, a = Math.atan2(y - sy, x - sx);
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(x, y); ctx.lineTo(x - Math.cos(a - 0.4) * 10, y - Math.sin(a - 0.4) * 10);
+      ctx.moveTo(x, y); ctx.lineTo(x - Math.cos(a + 0.4) * 10, y - Math.sin(a + 0.4) * 10); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(sx, sy, 4, 0, TAU); ctx.fill();
+    }
+    text(`天体 ${this.b.length - 1}`, 14, 26, { size: 13, color: '#8c98b4' });
+  },
+  down(x, y) { this.drag = { sx: x, sy: y, x, y }; },
+  move(x, y) { if (this.drag) { this.drag.x = x; this.drag.y = y; } },
+  up() {
+    if (!this.drag) return;
+    const { sx, sy, x, y } = this.drag, S = this.S;
+    if (Math.hypot(x - sx, y - sy) < 8) this.orbitAt(sx / S, sy / S);
+    else this.add(sx / S, sy / S, (x - sx) / S * 1.6, (y - sy) / S * 1.6);
+    this.drag = null;
+  }
+};
+
+/* ============ 提案数据 ============ */
+const IDEAS = [
+  { proto: idle, name: '星环工坊', genre: '休闲放置 · 星系经营',
+    pitch: '从一颗孤零零的恒星起步，把一片死寂的星域经营成热闹的星系，关掉网页也在继续增长。',
+    m: ['碎片化 0.5–3 分钟', 'MVP 4–5 天', '竖屏单手'],
+    loop: '采集能量（点击 + 自动）→ 建造行星和轨道设施 → 产出翻倍，解锁新星种（气态巨星、冰星、生命行星）→ 星系发展到上限后「超新星重生」，换取永久星尘加成 → 下一轮更快。',
+    ctrl: '纯点击/轻触，单手竖屏就能玩。',
+    time: '每次打开看 30 秒到 3 分钟；完整流程持续数天（放置类节奏）。',
+    art: '扁平风加霓虹描边，行星是几何渐变球体，数字跳动有反馈；配色以深蓝紫为底、暖金点缀。',
+    tech: '原生 Canvas 2D 画星系，DOM 做 UI；localStorage 存档并计算离线收益；数值写在 JSON 配置表里方便调。',
+    dev: 'MVP 4–5 天：核心循环、5 种建筑、重生系统、存档。',
+    fun: '数字膨胀的爽快感；星系一点点变满的视觉成就；门槛极低。',
+    risk: '放置类同质化严重；好不好玩全看数值曲线，需要反复调；前 5 分钟抓不住人就会流失；短时间试玩很难体现长线乐趣。' },
+  { proto: sling, name: '引力信使', genre: '物理弹射 · 关卡解谜', rec: true,
+    pitch: '一次发射，一条弧线：借行星引力绕出意想不到的轨迹，把包裹送到宇宙另一头。',
+    m: ['每关 10–60 秒', 'MVP 4–6 天', '鼠标/触屏一致'],
+    loop: '观察星图 → 拖拽决定方向和力度 → 发射后只能看着轨迹飞 → 失败立刻重来，成功按燃料、用时、星尘收集评星 → 逐章解锁新机制（双星、黑洞、虫洞、移动卫星、斥力场）。',
+    ctrl: '弹弓式拖拽瞄准、松手发射，显示前半段预测轨迹。',
+    time: '每关 10–60 秒，一章 15–20 关。',
+    art: '极简矢量线条，深色背景加发光轨迹，像一张干净的星图；每关留下的轨迹本身就像一幅画。',
+    tech: 'Canvas 2D 或 Phaser 3；自己写固定步长的引力积分（半隐式欧拉/Verlet）保证结果可复现；关卡用 JSON 描述，之后可以加关卡编辑器。',
+    dev: 'MVP 4–6 天：物理、5 种天体、20 关、评星、进度存档。',
+    fun: '「差一点就进了」带来的反复尝试；轨迹被引力甩出去的意外；一发完美通关的成就感；截图和关卡码都方便分享。',
+    risk: '关卡设计是主要工作量；预测线长短直接决定难度，需要调；物理弹射这个大类有同类游戏，要靠引力机制和关卡做出差别。' },
+  { proto: para, name: '视差星图', genre: '3D 视角解谜 · 星座收集',
+    pitch: '星座只在一个角度成立：在三维星空里旋转视角，找到古人看到的那幅图。',
+    m: ['每关 20–90 秒', 'MVP 3–4 天', '单指拖拽'],
+    loop: '进入一团散乱的星星 → 拖动旋转视角，跟着共鸣度找方向 → 对齐的瞬间星线点亮，星座「活过来」播放小动画和神话短文 → 收进图鉴 → 后续加入多个星座重叠、星云遮挡、需要移动观测位置等新机制。',
+    ctrl: '单指/鼠标拖拽旋转；后期可加双指缩放。',
+    time: '每关 20–90 秒，30 个星座约 1 小时。',
+    art: '深蓝夜空配金色星线，对齐后浮现古星图/版画质感的星座插画；空灵配乐。',
+    tech: 'Three.js（点精灵 + Bloom 辉光），或像原型这样用 Canvas 2D 自己做 3D 投影；一关的数据就是星点坐标 + 目标视角。',
+    dev: 'MVP 3–4 天：旋转、判定、20 个星座、图鉴。',
+    fun: '强烈的「啊哈」顿悟；对齐那一刻的视觉回报；节奏舒缓不焦虑，适合全年龄。',
+    risk: '玩法单一，后期需要新机制防止重复；星座图案和插画的内容产出量大；太简单会无聊、太难会变成乱转碰运气，需要设计提示系统。' },
+  { proto: surv, name: '碎岩带求生', genre: '生存射击 · 局内成长',
+    pitch: '氧气在漏，陨石在飞：武器自动开火，你只管走位，再贪几颗晶体。',
+    m: ['每局 3–8 分钟', 'MVP 5–7 天', '单指移动'],
+    loop: '移动躲避 → 自动射击，击碎小行星（大块会分裂成小块）→ 拾取晶体补氧气、攒经验 → 升级时三选一强化（散射、护盾、磁吸……）→ 撑到撤离点或死亡 → 用晶体解锁新飞船。',
+    ctrl: '单指拖动或鼠标指向来移动，射击全自动，手机单手可玩。',
+    time: '每局 3–8 分钟。',
+    art: '像素风或低多边形，靠爆炸粒子和屏幕震动加强打击感。',
+    tech: 'Phaser 3（物理、粒子、对象池）或 Canvas 2D；需要对象池保证手机上 60fps。',
+    dev: 'MVP 5–7 天：移动射击、3 种小行星、10 种强化、1 个 Boss、局外成长。',
+    fun: '割草的爽感；强化组合构筑；「再来一局」的强循环。',
+    risk: '割草生存类竞争非常激烈，需要独特钩子（氧气机制、小行星分裂物理）；对数值和内容量要求高；手机性能和发热问题。' },
+  { proto: rogue, name: '深空回声', genre: 'Roguelike · 星图探索',
+    pitch: '燃料只够跳十次：每个星系都是一场赌博，每段航程都是一个故事。',
+    m: ['每轮 15–30 分钟', 'MVP 6–8 天', '回合制点击'],
+    loop: '在星图上选下一跳 → 触发事件（补给、遇险、信号、行商、异常）并做选择 → 管理燃料、船体、零件 → 抵达信标进入下一星区 → 死亡后解锁新船员、新飞船、新事件。',
+    ctrl: '点击选择节点和事件选项，回合制，没有时间压力。',
+    time: '一轮 15–30 分钟（3 个星区）。',
+    art: '复古终端/扫描线 UI 配手绘星球卡片，以文字叙事为主。',
+    tech: 'DOM + Canvas 就够；程序化生成分层星图；事件用 JSON 剧本加条件/效果表达式。',
+    dev: 'MVP 6–8 天：地图生成、30 个事件、资源系统、商店、3 个星区、局外解锁。（原型里事件是自动结算的，完整版会给出选项。）',
+    fun: '抉择的紧张感；随机拼出的故事；规划路线的策略感；每局都不一样。',
+    risk: '体验高度依赖事件文案的数量和质量，写作量大；平衡难；10 秒原型最难体现乐趣；节奏偏慢，不适合想要动作感的玩家。' },
+  { proto: garden, name: '星海花园', genre: '治愈沙盒 · 观赏',
+    pitch: '没有目标，也不会失败：撒下星辰，看它们在引力中跳一支永不重复的舞。',
+    m: ['自由 2–20 分钟', 'MVP 3–4 天', '点击 + 甩动'],
+    loop: '放置恒星、行星、彗星 → 拖拽给初速度 → 观察轨道、碰撞合并、潮汐碎裂 → 每次合并奏出一个音符，汇成环境音乐 → 截图或录 GIF 分享。可加「轻目标」：维持稳定三体 60 秒、让卫星形成星环等成就。',
+    ctrl: '点击放置、拖拽甩出；支持慢放、快进、暂停。',
+    time: '没有固定时长，通常 2–20 分钟。',
+    art: '柔和的发光粒子加长尾轨迹，渐变配色，像长曝光摄影。',
+    tech: 'Canvas 2D（200 个天体以内），或 WebGL/Three.js 粒子（上千个）；Web Audio 实时生成音乐；可选 Barnes-Hut 优化。',
+    dev: 'MVP 3–4 天：放置、引力、合并、轨迹、音效、截图。',
+    fun: '放松和美；偶然的惊喜（意外形成稳定轨道）。',
+    risk: '没有目标导致留存低，更像玩具而不是游戏；需要成就或挑战模式补足；N 体计算有性能上限。' },
+];
+const CMP = [
+  // 上手, 手机, 原创/记忆点, 内容压力(低=好), 推荐
+  [5, 5, 2, 3, 3, '中（数值）'],
+  [5, 5, 4, 3, 5, '中（关卡）'],
+  [4, 5, 5, 2, 4, '高（星座 + 插画）'],
+  [5, 4, 2, 2, 3, '高（数值 + 内容）'],
+  [3, 4, 3, 1, 2, '很高（文案）'],
+  [5, 4, 3, 5, 3, '低'],
+];
+
+/* ============ 页面 ============ */
+const tabs = document.getElementById('tabs');
+const detail = document.getElementById('detail');
+const hint = document.getElementById('hint');
+const nums = ['①', '②', '③', '④', '⑤', '⑥'];
+let cur = 0;
+
+IDEAS.forEach((d, i) => {
+  const b = document.createElement('button');
+  b.className = 'tab'; b.setAttribute('role', 'tab');
+  b.innerHTML = `<span class="n">${nums[i]} 点子 ${i + 1}</span><span class="t">${d.name}</span><span class="g">${d.genre}</span>${d.rec ? '<span class="star">推荐</span>' : ''}`;
+  b.onclick = () => select(i);
+  tabs.appendChild(b);
+});
+
+const dots = n => '●'.repeat(n) + `<span class="off">${'●'.repeat(5 - n)}</span>`;
+document.getElementById('cmp').innerHTML =
+  '<thead><tr><th>点子</th><th>类型</th><th>单局</th><th>MVP</th><th>上手</th><th>手机适配</th><th>原创/记忆点</th><th>内容压力</th><th>推荐度</th></tr></thead><tbody>' +
+  IDEAS.map((d, i) => { const c = CMP[i]; return `<tr class="${d.rec ? 'rec' : ''}"><td><b>${nums[i]} ${d.name}</b></td><td>${d.genre}</td><td>${d.m[0]}</td><td>${d.m[1].replace('MVP ', '')}</td><td class="dots">${dots(c[0])}</td><td class="dots">${dots(c[1])}</td><td class="dots">${dots(c[2])}</td><td>${c[5]}</td><td class="dots">${dots(c[4])}</td></tr>`; }).join('') +
+  '</tbody>';
+
+function select(i) {
+  cur = i;
+  [...tabs.children].forEach((b, k) => b.setAttribute('aria-selected', k === i));
+  const d = IDEAS[i];
+  hint.innerHTML = d.proto.hint;
+  detail.innerHTML = `
+    <div class="head"><h2>${nums[i]} ${d.name}</h2><span class="chip">${d.genre}</span></div>
+    <p class="pitch">${d.pitch}</p>
+    <div class="metrics">${['单局时长', '开发量', '操作'].map((k, j) => `<div class="metric"><small>${k}</small><span>${d.m[j]}</span></div>`).join('')}</div>
+    <dl>
+      <dt>核心玩法循环</dt><dd>${d.loop}</dd>
+      <dt>操作方式</dt><dd>${d.ctrl}</dd>
+      <dt>单局时长</dt><dd>${d.time}</dd>
+      <dt>美术风格</dt><dd>${d.art}</dd>
+      <dt>技术方案</dt><dd>${d.tech}</dd>
+      <dt>开发量</dt><dd>${d.dev}</dd>
+      <dt>乐趣来源</dt><dd>${d.fun}</dd>
+      <dt>风险</dt><dd class="risk">${d.risk}</dd>
+    </dl>`;
+  if (W > 0) d.proto.init();
+  try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+}
+
+function resize() {
+  const r = canvas.getBoundingClientRect();
+  if (!r.width || (Math.abs(r.width - W) < 1 && Math.abs(r.height - H) < 1)) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  W = r.width; H = r.height;
+  IDEAS[cur].proto.init();
+}
+new ResizeObserver(resize).observe(canvas);
+
+const P = () => IDEAS[cur].proto;
+const pos = e => { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+canvas.addEventListener('pointerdown', e => { canvas.setPointerCapture(e.pointerId); const [x, y] = pos(e); P().down && P().down(x, y); e.preventDefault(); });
+canvas.addEventListener('pointermove', e => { const [x, y] = pos(e); P().move && P().move(x, y); });
+const up = e => { const [x, y] = pos(e); P().up && P().up(x, y); };
+canvas.addEventListener('pointerup', up);
+canvas.addEventListener('pointercancel', up);
+document.getElementById('reset').onclick = () => P().init();
+
+const start = parseInt(location.hash.slice(1), 10);
+select(start >= 1 && start <= 6 ? start - 1 : 1);
+resize();
+
+let last = performance.now(), T = 0;
+function frame(now) {
+  const dt = Math.min(0.033, (now - last) / 1000); last = now; T += dt;
+  if (W > 0) { const p = P(); p.update(dt); ctx.save(); p.draw(T); ctx.restore(); }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

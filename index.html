@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#05080f">
+<title>引力信使 · Gravity Courier</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<!-- 游戏内 HUD。data-i18n / data-i18n-aria 的文字由 js/i18n.js 按当前语言填入 -->
+<div id="hud" class="hidden">
+  <div class="hud-left">
+    <button class="icon-btn" id="btnPause" data-i18n-aria="ariaMenu">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="hud-title">
+      <div id="lvTitle"></div>
+      <div id="lvSub"></div>
+    </div>
+  </div>
+  <div id="ammo" data-i18n-aria="ariaAmmo"></div>
+  <div class="hud-right">
+    <button class="help-btn hidden" id="btnAwacs" data-i18n-aria="ariaAwacs">
+      <svg viewBox="0 0 24 24"><path d="M12 3c.9 0 1.5.7 1.5 1.6V9l7.5 4.5V16l-7.5-2.3v4.1l2 1.5V21L12 20l-3.5 1v-1.7l2-1.5v-4.1L3 16v-2.5L10.5 9V4.6C10.5 3.7 11.1 3 12 3z"/></svg>
+      <span data-i18n="awacsLabel"></span>
+    </button>
+    <button class="help-btn hidden" id="btnScope" data-i18n-aria="ariaScope">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="1.6"/><path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5"/></svg>
+      <span data-i18n="scopeLabel"></span>
+    </button>
+    <button class="icon-btn" id="btnRestart" data-i18n-aria="ariaRestart">
+      <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg>
+    </button>
+    <button class="icon-btn" id="btnMute" data-i18n-aria="ariaSound"></button>
+  </div>
+</div>
+<div id="toast" class="hidden"></div>
+<div id="fastHint" class="hidden" data-i18n="fastHint"></div>
+
+<!-- 瞄准控制：拖动画面粗调，按钮微调，点发射 -->
+<div id="controls" class="hidden">
+  <div class="ctl-row">
+    <span class="ctl-label" data-i18n="angle"></span>
+    <button class="ctl" id="angDown" data-i18n-aria="ariaAngDown">
+      <svg viewBox="0 0 24 24"><path d="M9 4H4v5M4.6 9A8 8 0 1 1 6 17"/></svg>
+    </button>
+    <button class="ctl" id="angUp" data-i18n-aria="ariaAngUp">
+      <svg viewBox="0 0 24 24"><path d="M15 4h5v5M19.4 9A8 8 0 1 0 18 17"/></svg>
+    </button>
+    <span class="ctl-val" id="roAng">0.0°</span>
+  </div>
+  <div class="ctl-row">
+    <span class="ctl-label" data-i18n="power"></span>
+    <button class="ctl" id="powDown" data-i18n-aria="ariaPowDown">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
+    </button>
+    <button class="ctl" id="powUp" data-i18n-aria="ariaPowUp">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg>
+    </button>
+    <span class="ctl-val" id="roPow">50%</span>
+  </div>
+  <button id="btnFire" class="fire"></button>
+</div>
+
+<!-- 标题 -->
+<section id="title" class="screen">
+  <div class="title-box">
+    <div class="kicker" data-i18n="kicker"></div>
+    <h1 data-i18n="title"></h1>
+    <p class="tagline" data-i18n="tagline"></p>
+    <div class="menu">
+      <button class="btn primary" id="btnPlay"></button>
+      <button class="btn" id="btnSelect" data-i18n="selectBtn"></button>
+      <button class="btn ghost" id="btnLangTitle" data-i18n="lang"></button>
+      <button class="btn ghost" id="btnMuteTitle"></button>
+      <button class="btn ghost" id="btnVibeTitle"></button>
+    </div>
+    <p class="howto" data-i18n="howto"></p>
+  </div>
+</section>
+
+<!-- 选关 -->
+<section id="select" class="screen hidden">
+  <div class="select-box">
+    <div class="select-head">
+      <button class="btn small" id="btnBackTitle" data-i18n="back"></button>
+      <h2 data-i18n="selectTitle"></h2>
+      <div id="starTotal"></div>
+    </div>
+    <div id="chapters"></div>
+  </div>
+</section>
+
+<!-- 关卡介绍 -->
+<section id="intro" class="overlay hidden">
+  <div class="card">
+    <div class="card-kicker" id="introNo"></div>
+    <h3 id="introName"></h3>
+    <p id="introTip"></p>
+    <div class="card-foot" data-i18n="introFoot"></div>
+  </div>
+</section>
+
+<!-- 结算 -->
+<section id="result" class="overlay hidden">
+  <div class="card">
+    <div class="card-kicker" id="resNo"></div>
+    <h3 id="resTitle"></h3>
+    <div class="stars" id="resStars"></div>
+    <p id="resInfo"></p>
+    <div class="card-btns" id="resBtns"></div>
+  </div>
+</section>
+
+<!-- 物理小卡片（盖在结算和选关页上面） -->
+<section id="physCard" class="overlay hidden">
+  <div class="card phys">
+    <div class="card-kicker" id="pcKicker"></div>
+    <h3 id="pcTitle"></h3>
+    <div class="formula" id="pcFormula"></div>
+    <div class="pc-body" id="pcBody"></div>
+    <div class="real">
+      <b id="pcRealLabel" data-i18n="cardReal"></b>
+      <p id="pcReal"></p>
+    </div>
+    <div class="card-btns"><button class="btn primary" id="pcOk" data-i18n="cardOk"></button></div>
+  </div>
+</section>
+
+<!-- 暂停 -->
+<section id="pause" class="overlay hidden">
+  <div class="card">
+    <h3 data-i18n="pauseTitle"></h3>
+    <div class="card-btns col">
+      <button class="btn primary" id="btnResume" data-i18n="resume"></button>
+      <button class="btn" id="btnPauseRestart" data-i18n="restartLevel"></button>
+      <button class="btn" id="btnPauseSelect" data-i18n="selectLevel"></button>
+      <button class="btn" id="btnPauseLang" data-i18n="lang"></button>
+      <button class="btn" id="btnPauseVibe"></button>
+      <button class="btn ghost" id="btnPauseTitle" data-i18n="backTitle"></button>
+    </div>
+  </div>
+</section>
+
+<script src="js/i18n.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/physics.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
